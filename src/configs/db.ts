@@ -1,30 +1,28 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
+import sql from "mssql";
+
 dotenv.config();
 
-import sql from 'mssql/msnodesqlv8';
-
-const dbConfig: sql.config = {
-    server: process.env.DB_SERVER || '',
-    database: process.env.DB_NAME || '',
-    driver: 'msnodesqlv8',
-    options: {
-        trustedConnection: true,
-        trustServerCertificate: true,
-        encrypt: true,
-
-    },
+// Local
+const config: sql.config = {
+  user: process.env.DB_USER || "sa",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "master",
+  server: process.env.DB_SERVER || "localhost",
+  options: {
+    encrypt: true,
+    trustServerCertificate: true,
+  },
 };
 
+export const pool = new sql.ConnectionPool(config);
 
-export const connectToDb = async () => {
-    try {
-        await sql.connect(dbConfig);
-        console.log('✅ Connected to MSSQL using Windows Authentication');
-    } catch (err) {
-        console.error('❌ Database connection failed:');
-        console.dir(err, { depth: 1 }); // <-- show full object
-        throw err;
-    }
+export const connectDB = async () => {
+  try {
+    await pool.connect();
+    console.info("Connected to MSSQL database");
+  } catch (error) {
+    console.error("Database connection failed:", error);
+    process.exit(1);
+  }
 };
-
-export default sql;
