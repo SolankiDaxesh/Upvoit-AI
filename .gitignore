@@ -1,1 +1,13 @@
 node_modules
+package-lock.json
+dist
+.DS_Store
+.env
+*.log
+*.tsbuildinfo
+*.js
+*.js.map
+.vscode
+*.vscode
+.idea
+*.sublime-project
