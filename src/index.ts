@@ -5,6 +5,9 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import { connectDB } from "./configs/db";
 
+import { AppError } from "./middleware/error";
+import router from "./routes/v1";
+
 dotenv.config();
 
 const app = express();
@@ -16,11 +19,11 @@ app.use(helmet());
 app.use(express.json());
 
 // Routes
-//app.use("/", router);
-// Catch-all route for unmatched paths
-app.use("*", (req, res) => {
-  res.status(404).json({ message: "Route not found" });
+app.use("/", router);
+app.use("**", () => {
+  throw new AppError("Recource not found", 404);
 });
+
 // Start server
 const startServer = async () => {
   try {
