@@ -11,3 +11,4 @@ dist
 *.vscode
 .idea
 *.sublime-project
+package-lock.json

@@ -20,8 +20,8 @@ app.use(express.json());
 
 // Routes
 app.use("/", router);
-app.use("**", () => {
-  throw new AppError("Recource not found", 404);
+app.all("*", (req, res, next) => {
+  next(new AppError("Resource not found", 404));
 });
 
 // Start server
