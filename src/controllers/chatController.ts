@@ -1,8 +1,12 @@
-import { model } from "../utils/ai_model";
-import { createReactAgent } from "@langchain/langgraph/prebuilt";
-import { common_rule } from "../constants/common-rule";
-import { ChatSchema } from "../models/Chats";
-import { Request, Response, NextFunction } from "express";
+import { model } from '../utils/ai_model';
+import { createReactAgent } from '@langchain/langgraph/prebuilt';
+import { common_rule } from '../constants/common-rule';
+import { ChatSchema } from '../models/Chats';
+import { Request, Response, NextFunction } from 'express';
+import { z } from 'zod';
+import * as T from '../tools';
+
+const agentTools = [T.InvoiceTool]; //
 
 export class ChatController {
   static async process(req: Request, res: Response, next: NextFunction) {
@@ -12,7 +16,7 @@ export class ChatController {
       // Create agent per request with dynamic prompt
       const app = createReactAgent({
         llm: model,
-        tools: [],
+        tools: agentTools,
         prompt: common_rule({}),
       });
 
@@ -20,7 +24,7 @@ export class ChatController {
         {
           messages: messages,
         },
-        { configurable: { thread_id: Math.random(), recursionLimit: 3 } }
+        { configurable: { thread_id: Math.random(), recursionLimit: 3 } },
       );
 
       res.status(200).json({ content: result.messages.at(-1)?.content });

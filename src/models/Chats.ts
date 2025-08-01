@@ -15,12 +15,12 @@ export const ChatSchema = z.object({
 
 export type ChatInput = z.infer<typeof ChatSchema>;
 
-export interface Chart<T> {
-  type: string;
-  data: T[];
-}
+// export interface Chart<T> {
+//   type: string;
+//   data: T[];
+// }
 
-export interface RenderResponse<T> {
-  content: string;
-  chart: Chart<T> | null;
-}
+// export interface RenderResponse<T> {
+//   content: string;
+//   chart: Chart<T> | null;
+// }
